@@ -1,3 +1,15 @@
+server:
+  port: ${SERVER_PORT:8080}
 spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  jpa:
+    hibernate:
+      ddl-auto: update
   application:
     name: transaction
+  datasource:
+    url: ${JDBC_URL:jdbc:mysql://localhost:3306/account_test}
+    username: ${JDBC_USER:root}
+    password: ${JDBC_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
