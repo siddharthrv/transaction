@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,11 @@ public class AccountController {
   @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<AccountDTO> create(@Valid @RequestBody CreateAccountReqDTO request) throws Exception {
     return new ResponseEntity<>(accountService.create(request), HttpStatus.OK);
+  }
+
+  @GetMapping(value = "/{accountId}")
+  public ResponseEntity<AccountDTO> create(@PathVariable("accountId") String accountId) throws Exception {
+    return new ResponseEntity<>(accountService.retrieveAccountByAccountId(accountId), HttpStatus.OK);
   }
 
 }

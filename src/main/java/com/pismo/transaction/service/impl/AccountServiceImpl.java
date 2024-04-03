@@ -33,4 +33,10 @@ public class AccountServiceImpl implements AccountService {
     // Convert the account entity to DTO and return it
     return accountEntity.toDto();
   }
+
+  @Override
+  public AccountDTO retrieveAccountByAccountId(String accountId) throws ApiException {
+    AccountEntity accountEntity = accountDataAccess.getById(accountId).orElseThrow(() -> ApiExceptionBuilder.build(ApiErrors.ACCOUNT_NOT_FOUND));
+    return accountEntity.toDto();
+  }
 }

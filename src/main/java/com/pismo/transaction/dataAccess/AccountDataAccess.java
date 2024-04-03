@@ -2,6 +2,7 @@ package com.pismo.transaction.dataAccess;
 
 import com.pismo.transaction.entity.AccountEntity;
 import com.pismo.transaction.repository.AccountRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,5 +18,9 @@ public class AccountDataAccess {
 
   public AccountEntity getByDocumentNumber(String documentNumber){
     return accountRepository.findByDocumentNumber(documentNumber);
+  }
+
+  public Optional<AccountEntity> getById(String documentNumber){
+    return accountRepository.findById(Long.valueOf(documentNumber));
   }
 }
