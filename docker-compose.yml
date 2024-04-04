@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql_8
+    restart: always
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  spring-boot-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: transaction_app
+    ports:
+      - "8090:8080"
+    depends_on:
+      - mysql
+    environment:
+      JDBC_URL: jdbc:mysql://mysql:3306/test?allowPublicKeyRetrieval=true
+      JDBC_USER: root
+      JDBC_PASSWORD: root
+volumes:
+  mysql_data:
