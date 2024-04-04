@@ -25,7 +25,8 @@ Follow these steps to set up and run the application:
    ```bash
    git clone https://github.com/siddharthrv/transaction.git
 
-2. ```bash
+2. **Run the below command**:
+    ```bash
     docker-compose up --build
     
 Service will spin in port 8090
@@ -34,4 +35,4 @@ Mysql will be exposed in port 3070
 
 Go to http://localhost:8090 to get API spec
 
-Repo will have postman collection in root directory Transaction.postman_collection.json which can be imported into postman
+Repo will have postman collection in root directory Transaction.postman_collection.json which can also be imported
