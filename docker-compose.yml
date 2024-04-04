@@ -23,7 +23,7 @@ services:
     depends_on:
       - mysql
     environment:
-      JDBC_URL: jdbc:mysql://mysql:3306/transaction?allowPublicKeyRetrieval=true
+      JDBC_URL: jdbc:mysql://mysql:3306/transaction?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
       JDBC_USER: root
       JDBC_PASSWORD: root
 volumes:
