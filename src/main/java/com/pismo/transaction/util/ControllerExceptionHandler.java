@@ -2,6 +2,10 @@ package com.pismo.transaction.util;
 
 import com.pismo.transaction.constants.error.ApiErrors;
 import com.pismo.transaction.constants.error.FieldErrors;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +52,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return this.handleFieldErrors(ex.getFieldErrors());
     }
 
-    @ExceptionHandler(value = Exception.class)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "400", description = "Invalid input",
+            content = {@Content(mediaType = "application/json",
+                schema = @Schema(implementation = ApiException.class))}),
+        @ApiResponse(responseCode = "409", description = "Business validation exception",
+            content = {@Content(mediaType = "application/json",
+                schema = @Schema(implementation = ApiException.class))}),
+        @ApiResponse(responseCode = "500", description = "Internal server error",
+            content = {@Content(mediaType = "application/json",
+                schema = @Schema(implementation = ApiException.class))})
+    })
+    @ExceptionHandler(Exception.class)
     public static ResponseEntity<Object> otherException(Exception exception) {
         log.error("Error in response", exception);
         return ResponseEntityBuilder.buildError(ApiExceptionBuilder.build(ApiErrors.UNEXPECTED_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);

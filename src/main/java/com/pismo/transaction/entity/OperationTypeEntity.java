@@ -1,5 +1,6 @@
 package com.pismo.transaction.entity;
 
+import com.pismo.transaction.constants.EntityConstants;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +11,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 
-@Table(name = "operation_type")
+@Table(name = EntityConstants.OPERATION_TYPE)
 @Entity
 @Getter
 @Setter

@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@JsonIgnoreProperties(value = {"stack_trace", "suppressed", "cause", "localized_message"}, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"stackTrace", "suppressed", "cause", "localizedMessage"}, ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @AllArgsConstructor

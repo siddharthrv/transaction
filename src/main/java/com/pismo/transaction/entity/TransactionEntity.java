@@ -1,5 +1,6 @@
 package com.pismo.transaction.entity;
 
+import com.pismo.transaction.constants.EntityConstants;
 import com.pismo.transaction.dto.AccountDTO;
 import com.pismo.transaction.enums.TxnStatus;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 
-@Table(name = "transaction", uniqueConstraints = @UniqueConstraint(columnNames = "ext_txn_id"))
+@Table(name = EntityConstants.TRANSACTION, uniqueConstraints = @UniqueConstraint(columnNames = "ext_txn_id"))
 @Entity
 @Getter
 @Setter

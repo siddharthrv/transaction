@@ -3,8 +3,6 @@ server:
 spring:
   flyway:
     enabled: false
-  jackson:
-    property-naming-strategy: SNAKE_CASE
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,5 +11,5 @@ spring:
   datasource:
     url: ${JDBC_URL:jdbc:mysql://localhost:3306/account_test}
     username: ${JDBC_USER:root}
-    password: ${JDBC_PASSWORD:root}
+    password: ${JDBC_PASSWORD:Mit@varun236}
     driver-class-name: com.mysql.cj.jdbc.Driver
