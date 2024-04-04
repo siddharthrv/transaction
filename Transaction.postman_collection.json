@@ -1,0 +1,462 @@
+{
+	"info": {
+		"_postman_id": "7f9728c1-dc3d-4411-9c90-dcf630cff816",
+		"name": "Transaction",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "2136909"
+	},
+	"item": [
+		{
+			"name": "Create Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"documentNumber\": \"test\",\n    \"name\": \"sid\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8090/accounts/"
+			},
+			"response": [
+				{
+					"name": "Create Account",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"documentNumber\": \"test\",\n    \"name\": \"sid\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8090/accounts/"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Apr 2024 14:47:27 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"name\": \"sid\",\n    \"documentNumber\": \"test\"\n}"
+				},
+				{
+					"name": "Customer already registered",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"documentNumber\": \"test\",\n    \"name\": \"sid\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8090/accounts/"
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Apr 2024 14:47:46 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorCode\": \"T_002\",\n    \"message\": \"Account already exists\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Account",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8090/accounts/1"
+			},
+			"response": [
+				{
+					"name": "Get Account",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8090/accounts/1"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Apr 2024 14:48:41 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"name\": \"sid\",\n    \"documentNumber\": \"test\"\n}"
+				},
+				{
+					"name": "Invalid Account",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8090/accounts/2"
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Apr 2024 14:48:53 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorCode\": \"T_004\",\n    \"message\": \"Requested account does not exist\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Txn",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountId\": 1,\n    \"operationTypeId\": 1,\n    \"amount\": 1000,\n    \"extTxnId\": \"{{$randomUUID}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8090/transaction/"
+			},
+			"response": [
+				{
+					"name": "Create Txn",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountId\": 1,\n    \"operationTypeId\": 1,\n    \"amount\": 1000,\n    \"extTxnId\": \"{{$randomUUID}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8090/transaction/"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Apr 2024 14:49:24 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"extTxnId\": \"85efea23-641e-4141-8f45-9328d47b4836\",\n    \"intTxnId\": 1,\n    \"description\": \"Normal Purchase\",\n    \"txnType\": \"DEBIT\"\n}"
+				},
+				{
+					"name": "Mandatory field missing",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"operationTypeId\": 1,\n    \"amount\": 1000,\n    \"extTxnId\": \"{{$randomUUID}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8090/transaction/"
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Apr 2024 14:49:39 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorCode\": \"T_001\",\n    \"message\": \"Invalid Data\",\n    \"errors\": [\n        \"Mandatory Field [accountId] is Missing\"\n    ]\n}"
+				},
+				{
+					"name": "Duplicate Txn",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountId\": 1,\n    \"operationTypeId\": 1,\n    \"amount\": 1000,\n    \"extTxnId\": \"8d8208f4-6ae0-4cf4-9386-6692946951c3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8090/transaction/"
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Apr 2024 14:50:23 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorCode\": \"T_005\",\n    \"message\": \"Duplicate external transaction id\"\n}"
+				},
+				{
+					"name": "Account not found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountId\": 2,\n    \"operationTypeId\": 1,\n    \"amount\": 1000,\n    \"extTxnId\": \"8d8208f4-6ae0-4cf4-9386-6692946951c3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8090/transaction/"
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Apr 2024 14:50:40 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorCode\": \"T_004\",\n    \"message\": \"Requested account does not exist\"\n}"
+				},
+				{
+					"name": "Invalid Operation Type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountId\": 1,\n    \"operationTypeId\": 5,\n    \"amount\": 1000,\n    \"extTxnId\": \"8d8208f4-6ae0-4cf4-9386-6692946951c3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8090/transaction/"
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Apr 2024 14:50:51 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorCode\": \"T_006\",\n    \"message\": \"Invalid operation type\"\n}"
+				}
+			]
+		}
+	]
+}

@@ -28,6 +28,8 @@ Follow these steps to set up and run the application:
 2. ```bash
     docker-compose up --build
     
-Service will run in port 8090
+Service will spin in port 8090
 
 Go to http://localhost:8090 to get API spec
+
+Repo will have postman collection in root directory Transaction.postman_collection.json which can be imported into postman
