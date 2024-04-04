@@ -4,7 +4,9 @@ import com.pismo.transaction.constants.ApiSpecConstants;
 import com.pismo.transaction.dto.AccountDTO;
 import com.pismo.transaction.dto.request.CreateAccountReqDTO;
 import com.pismo.transaction.service.AccountService;
+import com.pismo.transaction.util.ApiException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +29,13 @@ public class AccountController {
   private final AccountService accountService;
   @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
   @Operation(summary = ApiSpecConstants.CREATE_ACCOUNT_SUMMARY, description = ApiSpecConstants.CREATE_ACCOUNT_DESC)
-  public ResponseEntity<AccountDTO> create(@Valid @RequestBody CreateAccountReqDTO request) throws Exception {
+  public ResponseEntity<AccountDTO> create(@Valid @RequestBody CreateAccountReqDTO request) throws ApiException {
     return new ResponseEntity<>(accountService.create(request), HttpStatus.OK);
   }
 
   @GetMapping(value = "/{accountId}")
   @Operation(summary = ApiSpecConstants.RETRIEVE_ACCOUNT_SUMMARY, description = ApiSpecConstants.RETRIEVE_ACCOUNT_DESC)
-  public ResponseEntity<AccountDTO> retrieveAccountByAccountId(@PathVariable("accountId") Long accountId) throws Exception {
+  public ResponseEntity<AccountDTO> retrieveAccountByAccountId(@PathVariable("accountId") @Parameter(description = ApiSpecConstants.ACCOUNT_ID_RETRIEVE) Long accountId) throws ApiException {
     return new ResponseEntity<>(accountService.retrieveAccountByAccountId(accountId), HttpStatus.OK);
   }
 
