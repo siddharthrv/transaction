@@ -1,6 +1,8 @@
 server:
   port: ${SERVER_PORT:8080}
 spring:
+  flyway:
+    enabled: false
   jackson:
     property-naming-strategy: SNAKE_CASE
   jpa:
