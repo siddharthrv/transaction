@@ -6,5 +6,5 @@ import com.pismo.transaction.util.ApiException;
 
 public interface AccountService {
   AccountDTO create(CreateAccountReqDTO createAccountReqDTO) throws ApiException;
-  AccountDTO retrieveAccountByAccountId(String accountId) throws ApiException;
+  AccountDTO retrieveAccountByAccountId(Long accountId) throws ApiException;
 }

@@ -2,8 +2,8 @@ package com.pismo.transaction.dataAccess;
 
 import com.pismo.transaction.entity.AccountEntity;
 import com.pismo.transaction.repository.AccountRepository;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -20,7 +20,9 @@ public class AccountDataAccess {
     return accountRepository.findByDocumentNumber(documentNumber);
   }
 
-  public Optional<AccountEntity> getById(String documentNumber){
-    return accountRepository.findById(Long.valueOf(documentNumber));
+
+  @Cacheable(value = "accountType", key = "#id", unless = "#result == null")
+  public AccountEntity getById(Long id){
+    return accountRepository.findById(id).orElse(null);
   }
 }

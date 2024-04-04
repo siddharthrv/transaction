@@ -30,9 +30,9 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         List<String> errorList = new ArrayList<>();
         fieldErrors.forEach(fieldError -> {
             String fieldName = fieldError.getField();
-            String fieldErrorMsg = fieldError.getDefaultMessage();
-            if (FieldErrors.MANDATORY_FIELD_MISSING.equals(fieldErrorMsg)) {
-                errorList.add(MessageFormat.format(FieldErrors.MANDATORY_FIELD_MISSING_MSG, List.of(fieldName)));
+            String fieldErrorType = fieldError.getDefaultMessage();
+            if (FieldErrors.ERROR_MESSAGES.containsKey(fieldErrorType)) {
+                errorList.add(MessageFormat.format(FieldErrors.ERROR_MESSAGES.get(fieldErrorType), List.of(fieldName)));
             }
         });
         ApiException exception = null;
@@ -49,7 +49,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = Exception.class)
-    public static ResponseEntity<Object> apiException(Exception exception) {
+    public static ResponseEntity<Object> otherException(Exception exception) {
         log.error("Error in response", exception);
         return ResponseEntityBuilder.buildError(ApiExceptionBuilder.build(ApiErrors.UNEXPECTED_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
     }

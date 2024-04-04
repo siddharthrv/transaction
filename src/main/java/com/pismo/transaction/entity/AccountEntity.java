@@ -1,12 +1,10 @@
 package com.pismo.transaction.entity;
 
 import com.pismo.transaction.dto.AccountDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +12,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 
-@Table(name = "account")
+@Table(name = "account", uniqueConstraints = @UniqueConstraint(columnNames = "document_number"))
 @Entity
 @Getter
 @Setter
@@ -23,8 +21,10 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class AccountEntity extends AbstractEntity{
 
+   @NotNull
    private String documentNumber;
 
+   @NotNull
    private String name;
 
    public AccountDTO toDto(){

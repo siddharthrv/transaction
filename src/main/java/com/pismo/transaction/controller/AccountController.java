@@ -27,7 +27,7 @@ public class AccountController {
   }
 
   @GetMapping(value = "/{accountId}")
-  public ResponseEntity<AccountDTO> create(@PathVariable("accountId") String accountId) throws Exception {
+  public ResponseEntity<AccountDTO> retrieveAccountByAccountId(@PathVariable("accountId") Long accountId) throws Exception {
     return new ResponseEntity<>(accountService.retrieveAccountByAccountId(accountId), HttpStatus.OK);
   }
 

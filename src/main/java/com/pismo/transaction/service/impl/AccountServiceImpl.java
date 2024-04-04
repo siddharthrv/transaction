@@ -35,8 +35,11 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public AccountDTO retrieveAccountByAccountId(String accountId) throws ApiException {
-    AccountEntity accountEntity = accountDataAccess.getById(accountId).orElseThrow(() -> ApiExceptionBuilder.build(ApiErrors.ACCOUNT_NOT_FOUND));
+  public AccountDTO retrieveAccountByAccountId(Long accountId) throws ApiException {
+    AccountEntity accountEntity = accountDataAccess.getById(accountId);
+    if(accountEntity == null ){
+      throw ApiExceptionBuilder.build(ApiErrors.ACCOUNT_NOT_FOUND);
+    }
     return accountEntity.toDto();
   }
 }
