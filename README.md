@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project is a Spring Boot application developed using Gradle as the build automation tool and Java 21 for handling transactions and account creation. It provides a robust foundation for creating and retrieving accounts. It also provides to support to perform transaction in the created account.
+This project is a Spring Boot application developed using Gradle as the build automation tool and Java 21 for handling transactions and account creation. It provides a robust foundation for creating and retrieving accounts. It also provides support to perform debit/credit transaction in the created account.
 
 ## Features
 
