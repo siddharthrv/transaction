@@ -14,7 +14,7 @@ public class OperationDataAccess {
 
 
     @Cacheable(value = "operationType", key = "#id", unless = "#result == null")
-    public OperationTypeEntity findById(Long id){
+    public OperationTypeEntity getById(Long id){
       return operationTypeRepository.findById(id).orElse(null);
     }
 }

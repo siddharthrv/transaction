@@ -4,8 +4,6 @@ import com.pismo.transaction.constants.error.ApiErrors;
 import com.pismo.transaction.dataAccess.AccountDataAccess;
 import com.pismo.transaction.dataAccess.OperationDataAccess;
 import com.pismo.transaction.dataAccess.TransactionDataAccess;
-import com.pismo.transaction.dto.AccountDTO;
-import com.pismo.transaction.dto.request.CreateAccountReqDTO;
 import com.pismo.transaction.dto.request.CreateTransactionReqDTO;
 import com.pismo.transaction.dto.response.CreateTransactionResDTO;
 import com.pismo.transaction.entity.AccountEntity;
@@ -13,7 +11,6 @@ import com.pismo.transaction.entity.OperationTypeEntity;
 import com.pismo.transaction.entity.TransactionEntity;
 import com.pismo.transaction.enums.CrDr;
 import com.pismo.transaction.enums.TxnStatus;
-import com.pismo.transaction.service.AccountService;
 import com.pismo.transaction.service.TransactionService;
 import com.pismo.transaction.util.ApiException;
 import com.pismo.transaction.util.ApiExceptionBuilder;
@@ -35,7 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
   @Override
   public CreateTransactionResDTO create(CreateTransactionReqDTO createTransactionReqDTO) throws ApiException {
     //check if operation type exists
-    OperationTypeEntity operationType = operationDataAccess.findById(createTransactionReqDTO.getOperationTypeId());
+    OperationTypeEntity operationType = operationDataAccess.getById(createTransactionReqDTO.getOperationTypeId());
     if(operationType == null){
       throw ApiExceptionBuilder.build(ApiErrors.INVALID_OPERATION_TYPE);
     }
