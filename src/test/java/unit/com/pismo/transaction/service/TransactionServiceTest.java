@@ -3,6 +3,7 @@ package unit.com.pismo.transaction.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.pismo.transaction.constants.error.ApiErrors;
@@ -16,6 +17,7 @@ import com.pismo.transaction.entity.OperationTypeEntity;
 import com.pismo.transaction.entity.TransactionEntity;
 import com.pismo.transaction.service.impl.TransactionServiceImpl;
 import com.pismo.transaction.util.ApiException;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -110,6 +112,7 @@ public class TransactionServiceTest {
     assertEquals(createTransactionResDTO.getExtTxnId(), createTransactionReqDTO.getExtTxnId());
     assertEquals(createTransactionResDTO.getDescription(), operationType.getDescription());
     assertEquals(createTransactionResDTO.getIntTxnId(), transactionEntity.getId());
+    assertEquals(createTransactionResDTO.getBalance(), -createTransactionReqDTO.getAmount());
 
     //validate if amount is getting stamped negative
     TransactionEntity capturedArgument = argumentCaptor.getValue();
@@ -149,6 +152,72 @@ public class TransactionServiceTest {
     assertEquals(createTransactionResDTO.getExtTxnId(), createTransactionReqDTO.getExtTxnId());
     assertEquals(createTransactionResDTO.getDescription(), operationType.getDescription());
     assertEquals(createTransactionResDTO.getIntTxnId(), transactionEntity.getId());
+    assertEquals(createTransactionResDTO.getBalance(), createTransactionReqDTO.getAmount());
+
+    //validate if amount is getting stamped positive
+    TransactionEntity capturedArgument = argumentCaptor.getValue();
+    assertEquals(capturedArgument.getAmount(), createTransactionReqDTO.getAmount());
+  }
+
+  @Test
+  @DisplayName("Should create creation and set amount to positive if credit transaction after knocking off one debit txn")
+  void createTransactionShouldSucceedForCreditTxnWithPreviousSingleDebitTxn() throws ApiException {
+    OperationTypeEntity operationType = OperationTypeEntity.builder()
+        .isCredit(true)
+        .description("Test")
+        .build();
+    AccountEntity accountEntity = AccountEntity.builder()
+        .id(1L)
+        .build();
+    TransactionEntity transactionEntity = TransactionEntity.builder()
+        .operationType(operationType)
+        .account(accountEntity)
+        .id(2L)
+        .build();
+    when(operationDataAccess.getById(1L)).thenReturn(operationType);
+    when(accountDataAccess.getById(1L)).thenReturn(accountEntity);
+    when(transactionDataAccess.getByExtTxnId("extTxnId1")).thenReturn(null);
+
+    when(transactionDataAccess.fetchDebitTxnsWithBalance(1L)).thenReturn(List.of(
+        TransactionEntity.builder()
+            .extTxnId("extTxnId2")
+            .balance(-50.0)
+            .amount(-50.0)
+            .operationType(operationType)
+            .account(accountEntity)
+        .build(),
+        TransactionEntity.builder()
+            .extTxnId("extTxnId3")
+            .balance(-23.5)
+            .amount(-23.5)
+            .operationType(operationType)
+            .account(accountEntity)
+            .build(),
+        TransactionEntity.builder()
+            .extTxnId("extTxnId4")
+            .balance(-18.7)
+            .amount(-18.7)
+            .operationType(operationType)
+            .account(accountEntity)
+            .build()
+    ));
+
+    ArgumentCaptor<TransactionEntity> argumentCaptor = ArgumentCaptor.forClass(TransactionEntity.class);
+    when(transactionDataAccess.create(argumentCaptor.capture())).thenReturn(transactionEntity);
+
+    CreateTransactionReqDTO createTransactionReqDTO = CreateTransactionReqDTO.builder()
+        .operationTypeId(1L)
+        .accountId(1L)
+        .extTxnId("extTxnId1")
+        .amount(60d)
+        .build();
+
+    CreateTransactionResDTO createTransactionResDTO = transactionService.create(createTransactionReqDTO);
+    assertEquals(createTransactionResDTO.getDescription(), operationType.getDescription());
+    assertEquals(createTransactionResDTO.getExtTxnId(), createTransactionReqDTO.getExtTxnId());
+    assertEquals(createTransactionResDTO.getDescription(), operationType.getDescription());
+    assertEquals(createTransactionResDTO.getIntTxnId(), transactionEntity.getId());
+    assertEquals(createTransactionResDTO.getBalance(), 0d);
 
     //validate if amount is getting stamped positive
     TransactionEntity capturedArgument = argumentCaptor.getValue();

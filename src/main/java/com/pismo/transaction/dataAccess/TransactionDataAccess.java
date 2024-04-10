@@ -4,7 +4,7 @@ import com.pismo.transaction.entity.AccountEntity;
 import com.pismo.transaction.entity.TransactionEntity;
 import com.pismo.transaction.repository.AccountRepository;
 import com.pismo.transaction.repository.TransactionRepository;
-import java.util.Optional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,5 +20,13 @@ public class TransactionDataAccess {
 
   public TransactionEntity getByExtTxnId(String extTxnId){
     return transactionRepository.findByExtTxnId(extTxnId);
+  }
+
+  public List<TransactionEntity> fetchDebitTxnsWithBalance(Long accountId){
+    return transactionRepository.findByAccountIdAndBalanceLessThan(accountId, 0d);
+  }
+
+  public void update(TransactionEntity transaction){
+    transactionRepository.save(transaction);
   }
 }

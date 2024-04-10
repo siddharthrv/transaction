@@ -14,8 +14,11 @@ import com.pismo.transaction.enums.TxnStatus;
 import com.pismo.transaction.service.TransactionService;
 import com.pismo.transaction.util.ApiException;
 import com.pismo.transaction.util.ApiExceptionBuilder;
+import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -30,6 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
   private final AccountDataAccess accountDataAccess;
 
   @Override
+  @Transactional
   public CreateTransactionResDTO create(CreateTransactionReqDTO createTransactionReqDTO) throws ApiException {
     //check if operation type exists
     OperationTypeEntity operationType = operationDataAccess.getById(createTransactionReqDTO.getOperationTypeId());
@@ -49,21 +53,43 @@ public class TransactionServiceImpl implements TransactionService {
       throw ApiExceptionBuilder.build(ApiErrors.DUPLICATE_EXT_TXN_ID);
     }
 
+    Double amount = operationType.getIsCredit() ? createTransactionReqDTO.getAmount() : -createTransactionReqDTO.getAmount();
+
     //create transaction record
     transaction = transactionDataAccess.create(TransactionEntity.builder()
         .extTxnId(createTransactionReqDTO.getExtTxnId())
         .status(TxnStatus.SUCCESS)
-        .amount(operationType.getIsCredit() ? createTransactionReqDTO.getAmount() : -createTransactionReqDTO.getAmount())
+        .amount(amount)
         .account(accountEntity)
         .operationType(operationType)
+        .balance(amount)
         .build());
 
+    double balAmount = amount;
+
+    if(operationType.getIsCredit()){
+      List<TransactionEntity> debitTxnsWithBalance = transactionDataAccess.fetchDebitTxnsWithBalance(accountEntity.getId());
+      if(ObjectUtils.isNotEmpty(debitTxnsWithBalance)){
+          for(TransactionEntity debitTxn: debitTxnsWithBalance){
+              double knockOffAmount = Math.min(balAmount, Math.abs(debitTxn.getBalance()));
+              debitTxn.setBalance(debitTxn.getBalance() + knockOffAmount);
+              transactionDataAccess.update(debitTxn);
+              balAmount -= knockOffAmount;
+              if(balAmount == 0d){
+                break;
+              }
+          }
+          transaction.setBalance(balAmount);
+          transactionDataAccess.update(transaction);
+      }
+    }
 
     return CreateTransactionResDTO.builder()
         .extTxnId(createTransactionReqDTO.getExtTxnId())
         .intTxnId(transaction.getId())
         .txnType(operationType.getIsCredit() ? CrDr.CREDIT: CrDr.DEBIT)
         .description(operationType.getDescription())
+        .balance(balAmount)
         .build();
   }
 }

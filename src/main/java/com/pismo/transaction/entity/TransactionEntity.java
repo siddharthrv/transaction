@@ -43,6 +43,9 @@ public class TransactionEntity extends AbstractEntity{
    private Double amount;
 
    @NotNull
+   private Double balance;
+
+   @NotNull
    private String extTxnId;
 
    @Enumerated(EnumType.STRING)

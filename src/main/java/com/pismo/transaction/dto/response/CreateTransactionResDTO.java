@@ -23,4 +23,5 @@ public class CreateTransactionResDTO {
    private String description;
    @Schema(description= ApiSpecConstants.TXNTYPE)
    private CrDr txnType;
+   private Double balance;
 }
