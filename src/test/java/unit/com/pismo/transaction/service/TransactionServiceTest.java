@@ -17,7 +17,9 @@ import com.pismo.transaction.entity.OperationTypeEntity;
 import com.pismo.transaction.entity.TransactionEntity;
 import com.pismo.transaction.service.impl.TransactionServiceImpl;
 import com.pismo.transaction.util.ApiException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -205,6 +207,9 @@ public class TransactionServiceTest {
     ArgumentCaptor<TransactionEntity> argumentCaptor = ArgumentCaptor.forClass(TransactionEntity.class);
     when(transactionDataAccess.create(argumentCaptor.capture())).thenReturn(transactionEntity);
 
+    ArgumentCaptor<List<TransactionEntity>> saveAllArgumentCaptor = ArgumentCaptor.forClass(List.class);
+    when(transactionDataAccess.saveAll(saveAllArgumentCaptor.capture())).thenReturn(null);
+
     CreateTransactionReqDTO createTransactionReqDTO = CreateTransactionReqDTO.builder()
         .operationTypeId(1L)
         .accountId(1L)
@@ -221,6 +226,19 @@ public class TransactionServiceTest {
 
     //validate if amount is getting stamped positive
     TransactionEntity capturedArgument = argumentCaptor.getValue();
+    assertEquals(capturedArgument.getAmount(), createTransactionReqDTO.getAmount());
+
+    List<TransactionEntity> capturedSavedAllArgument = saveAllArgumentCaptor.getValue();
+
+    Map<String, Double> assertValues = new HashMap<>();
+    assertValues.put("extTxnId2", 0d);
+    assertValues.put("extTxnId3", -13.5);
+    assertValues.put("extTxnId1", 0d);
+
+    for(TransactionEntity transaction: capturedSavedAllArgument){
+      assertEquals(transaction.getBalance(), assertValues.get(transaction.getExtTxnId()));
+    }
+
     assertEquals(capturedArgument.getAmount(), createTransactionReqDTO.getAmount());
   }
 

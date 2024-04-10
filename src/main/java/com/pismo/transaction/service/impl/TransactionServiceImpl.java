@@ -15,6 +15,7 @@ import com.pismo.transaction.service.TransactionService;
 import com.pismo.transaction.util.ApiException;
 import com.pismo.transaction.util.ApiExceptionBuilder;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,17 +71,20 @@ public class TransactionServiceImpl implements TransactionService {
     if(operationType.getIsCredit()){
       List<TransactionEntity> debitTxnsWithBalance = transactionDataAccess.fetchDebitTxnsWithBalance(accountEntity.getId());
       if(ObjectUtils.isNotEmpty(debitTxnsWithBalance)){
+          List<TransactionEntity> knockedOffTxns = new ArrayList<>();
           for(TransactionEntity debitTxn: debitTxnsWithBalance){
               double knockOffAmount = Math.min(balAmount, Math.abs(debitTxn.getBalance()));
               debitTxn.setBalance(debitTxn.getBalance() + knockOffAmount);
-              transactionDataAccess.update(debitTxn);
+              knockedOffTxns.add(debitTxn);
               balAmount -= knockOffAmount;
               if(balAmount == 0d){
                 break;
               }
           }
           transaction.setBalance(balAmount);
-          transactionDataAccess.update(transaction);
+          //adding credit txn to the txns save list
+          knockedOffTxns.add(transaction);
+          transactionDataAccess.saveAll(knockedOffTxns);
       }
     }
 

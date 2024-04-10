@@ -26,6 +26,11 @@ public class TransactionDataAccess {
     return transactionRepository.findByAccountIdAndBalanceLessThan(accountId, 0d);
   }
 
+  public Iterable<TransactionEntity> saveAll(List<TransactionEntity> transactionEntities){
+     return transactionRepository.saveAll(transactionEntities);
+  }
+
+
   public void update(TransactionEntity transaction){
     transactionRepository.save(transaction);
   }
