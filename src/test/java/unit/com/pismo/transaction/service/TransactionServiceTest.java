@@ -162,7 +162,7 @@ public class TransactionServiceTest {
   }
 
   @Test
-  @DisplayName("Should create creation and set amount to positive if credit transaction after knocking off one debit txn")
+  @DisplayName("Should create creation and set amount to positive if credit transaction after knocking off debit txns")
   void createTransactionShouldSucceedForCreditTxnWithPreviousSingleDebitTxn() throws ApiException {
     OperationTypeEntity operationType = OperationTypeEntity.builder()
         .isCredit(true)
@@ -174,6 +174,8 @@ public class TransactionServiceTest {
     TransactionEntity transactionEntity = TransactionEntity.builder()
         .operationType(operationType)
         .account(accountEntity)
+        .extTxnId("extTxnId1")
+        .balance(60d)
         .id(2L)
         .build();
     when(operationDataAccess.getById(1L)).thenReturn(operationType);
